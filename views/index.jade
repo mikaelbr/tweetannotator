@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  article.main
+    ul#annotations
+
+  script(id='tweet-item', type='text/html')
+    <div class="body">
+    <p><%= text %></p>
+    </div>
+    <div class="buttons">
+    <a class="objective btn btn-info" href="#">Objective</a>
+    <a class="positive btn btn-success" href="#">Positive</a>
+    <a class="negative btn btn-danger" href="#">Negative</a>
+    </div>
+
+  script(src="js/vendor/require.js")
+  script
+    require(['backbone', 'js/app'], function (Backbone, App) {
+      var AppRoutes = Backbone.Router.extend({
+        routes: {
+          '': 'index',
+          'list': 'list'
+        },
+        index: function() {
+          var annotateView = new App.Views.AnnotateView( { collection: new App.Collections.Tweets() });
+          annotateView.nextTweet();
+        },
+        list: function(query, page) {
+          var listView = new App.Views.ListView( { collection: new App.Collections.Tweets() });
+          listView.collection.fetch();
+        }
+      });
+
+      new AppRoutes;
+      Backbone.history.start();
+    });
