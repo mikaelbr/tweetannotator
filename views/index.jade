@@ -1,8 +1,32 @@
 extends layout
 
 block content
-  article.main
-    ul#annotations
+  
+  div.navbar.navbar-fixed-top
+    div.navbar-inner
+      a.brand(href='/#') Sentiment Annotator
+      ul.nav
+        li.active
+          a(href='/#') Annotate
+        li
+          a(href='/#list') List
+        li
+          a(href='/tweets') JSON Data
+
+  div.container
+    article.main.span8
+
+      form
+        fieldset
+          div.input-prepend
+            span.add-on @
+            input#prependedInput.span2(type='text', placeholder='Annotator Identifier Name')
+          label.checkbox
+            span.checkbox-text Annotated here before with this identifier?
+            input(type='checkbox', checked='checked') 
+
+
+      ul#annotations.annotation-list
 
   script(id='tweet-item', type='text/html')
     <div class="body">
@@ -17,14 +41,15 @@ block content
   script(src="js/vendor/require.js")
   script
     require(['backbone', 'js/app'], function (Backbone, App) {
+      var annotateView = new App.Views.AnnotateView( { collection: new App.Collections.Tweets() });
+      annotateView.nextTweet();
       var AppRoutes = Backbone.Router.extend({
         routes: {
           '': 'index',
           'list': 'list'
         },
         index: function() {
-          var annotateView = new App.Views.AnnotateView( { collection: new App.Collections.Tweets() });
-          annotateView.nextTweet();
+          annotateView.render();
         },
         list: function(query, page) {
           var listView = new App.Views.ListView( { collection: new App.Collections.Tweets() });
