@@ -6,9 +6,9 @@ block content
     div.navbar-inner
       a.brand(href='/#') Sentiment Annotator
       ul.nav
-        li.active
+        li#annotate-menu
           a(href='/#') Annotate
-        li
+        li#list-menu
           a(href='/#list') List
         li
           a(href='/tweets') JSON Data
@@ -21,9 +21,9 @@ block content
           div.input-prepend
             span.add-on @
             input#prependedInput.span2(type='text', placeholder='Annotator Identifier Name')
-          label.checkbox
-            span.checkbox-text Annotated here before with this identifier?
-            input(type='checkbox', checked='checked') 
+          //- label.checkbox
+          //-   span.checkbox-text Annotated here before with this identifier?
+          //-   input(type='checkbox', checked='checked') 
 
 
       ul#annotations.annotation-list
@@ -41,7 +41,15 @@ block content
   script(src="js/vendor/require.js")
   script
     require(['backbone', 'js/app'], function (Backbone, App) {
-      var annotateView = new App.Views.AnnotateView( { collection: new App.Collections.Tweets() });
+      var userModel = new App.Models.User()
+        , userView = new App.Views.User({ model: userModel })
+        , annotateView = new App.Views.AnnotateView( { collection: new App.Collections.Tweets(), user: userView})
+        , listView = new App.Views.ListView( { collection: new App.Collections.Tweets(), user: userView})
+        , menuAnnotate = $('#annotate-menu')
+        , menuList = $('#list-menu');
+
+      userModel.fetch();
+
       annotateView.nextTweet();
       var AppRoutes = Backbone.Router.extend({
         routes: {
@@ -50,10 +58,15 @@ block content
         },
         index: function() {
           annotateView.render();
+          menuAnnotate.addClass('active').siblings().removeClass('active');
+
+          if (!annotateView.$el.find('li:first .buttons').is(':visible')) {
+            annotateView.nextTweet();
+          }
         },
         list: function(query, page) {
-          var listView = new App.Views.ListView( { collection: new App.Collections.Tweets() });
           listView.collection.fetch();
+          menuList.addClass('active').siblings().removeClass('active');
         }
       });
 

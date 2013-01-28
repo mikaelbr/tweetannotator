@@ -2,10 +2,12 @@ define(['backbone', 'underscore', 'jquery', 'js/collections/tweets', 'js/views/t
   return Backbone.View.extend({
     el: '#annotations',
 
-    initialize: function () {
+    initialize: function (options) {
       this.collection.on('add', this.addOne, this);
       this.collection.on('reset', this.render, this);
       this.render();
+
+      this.user = this.options.user;
     },
 
     render: function () {
@@ -16,7 +18,8 @@ define(['backbone', 'underscore', 'jquery', 'js/collections/tweets', 'js/views/t
 
     addOne: function (tweet) {
       var tweetView = new TweetView({
-          model: tweet
+          model: tweet,
+          user: this.user
       });
       this.$el.prepend(tweetView.render().el);
       return this;
