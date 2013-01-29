@@ -13,8 +13,50 @@ block content
         li
           a(href='/tweets') JSON Data
 
+  div#help-modal.modal.hide.fade(role='dialog', tabindex='-1', aria-labelledby='help-modal-label', aria-hidden='true')
+    div.modal-header
+      button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+      h2#help-modal-label Annotation Help
+    div.modal-body
+      p We are constructing a data set for doing Sentiment Analysis on Twitter data. 
+        | This means we are trying to read a random tweet and classify whether the tweet is objective 
+        | (neutral, no sentiment at all) or subjective. If the tweet is classified as subjective 
+        | the polarity of the tweet is classified (if the tweet is with positive or negative intent).
+
+      p Here are some guidelines for annotating tweets by sentiment.
+
+      ol
+        li 
+          strong Remember to type in your name to identify your labeling. 
+          | This name should be somewhat unique, so 
+          | use a full name or a pseudonym if you want. You should remember this name and use the same everytime 
+          | you annotate. This is so we can calculate annotators accuracy.
+        li 
+          strong Annotate by using the buttons. 
+          | There are three labels: objective (or neutral), positive and negative. Pick the 
+          | one you feel represents the sentiment of the tweet. 
+          br
+          strong Pro tip: 
+          | You can use hotkeys: 
+          code 1 = objective
+          | , 
+          code 2 = positive 
+          | and 
+          code 3 = negative 
+          | . 
+        li If you wish you can go to the 
+          a(href="#list") List
+          | -tab to change annotations for all tweets in the data storage. 
+
+      p Thank you very much for helping us out with generating a data set for our Master's thesis!
+
+    div.modal-footer
+      button.btn.btn-primary(data-dismiss="modal", aria-hidden="true") Close
+
   div.container
     article.main.span8
+
+      a.help-button(role='button', href='#help-modal', data-toggle='modal') Annotation Help
 
       form
         fieldset
@@ -40,7 +82,21 @@ block content
 
   script(src="js/vendor/require.js")
   script
-    require(['backbone', 'js/app'], function (Backbone, App) {
+    require(['backbone', 'js/app', 'jquery'], function (Backbone, App, $) {
+
+      // Temporary hack for getting bootstrap to work with Jam.js
+      window.$ = $;
+      require(['bootstrap/js/bootstrap-modal', 'bootstrap/js/bootstrap-transition'], function () {
+        var $modal = $('#help-modal');
+        $modal.modal({
+          show: false
+        });
+
+        $modal.on('click', '.modal-body a', function () {
+          $modal.modal('hide');
+        });
+      });
+
       var userModel = new App.Models.User()
         , userView = new App.Views.User({ model: userModel })
         , annotateView = new App.Views.AnnotateView( { collection: new App.Collections.Tweets(), user: userView})

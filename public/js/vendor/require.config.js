@@ -6,6 +6,10 @@ var jam = {
             "main": "backbone.js"
         },
         {
+            "name": "bootstrap",
+            "location": "js/vendor/bootstrap"
+        },
+        {
             "name": "jquery",
             "location": "js/vendor/jquery",
             "main": "dist/jquery.js"
@@ -40,6 +44,10 @@ if (typeof require !== "undefined" && require.config) {
             "main": "backbone.js"
         },
         {
+            "name": "bootstrap",
+            "location": "js/vendor/bootstrap"
+        },
+        {
             "name": "jquery",
             "location": "js/vendor/jquery",
             "main": "dist/jquery.js"
@@ -71,6 +79,10 @@ else {
             "name": "backbone",
             "location": "js/vendor/backbone",
             "main": "backbone.js"
+        },
+        {
+            "name": "bootstrap",
+            "location": "js/vendor/bootstrap"
         },
         {
             "name": "jquery",
