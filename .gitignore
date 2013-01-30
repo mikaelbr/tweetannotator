@@ -1,5 +1,6 @@
 node_modules/
 config/runtime.json
+data/cache.json
 
 # Logs and databases #
 ######################
