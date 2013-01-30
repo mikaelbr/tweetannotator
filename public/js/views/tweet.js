@@ -18,6 +18,7 @@ define(['backbone', 'underscore', 'jquery', 'js/models/tweet'], function (Backbo
       'click .buttons .objective': 'objective',
       'click .buttons .positive': 'positive',
       'click .buttons .negative': 'negative',
+      'click .buttons .skip': 'skip',
       'click': 'showEdit'
     },
 
@@ -82,6 +83,12 @@ define(['backbone', 'underscore', 'jquery', 'js/models/tweet'], function (Backbo
       }).save();
     },
 
+    skip: function (e) {
+      e.preventDefault();
+      this.model.destroy();
+      this.remove();
+    },
+
 
     keydown: function (e) {
       if(e.keyCode === 49) { // number 1
@@ -94,6 +101,10 @@ define(['backbone', 'underscore', 'jquery', 'js/models/tweet'], function (Backbo
 
       if(e.keyCode === 51) { // number 3
         return this.negative(e);
+      }
+
+      if(e.keyCode === 52) { // number 3
+        return this.skip(e);
       }
     },
 
@@ -118,6 +129,7 @@ define(['backbone', 'underscore', 'jquery', 'js/models/tweet'], function (Backbo
 
       if (!!annotation) {
         this.$el.find('.buttons').hide();
+        this.$el.find('.buttons .skip').remove();
         console.log(annotation.classification)
         console.log(_.last(annotation.classification));
         this.el.className = _.last(annotation.classification).value;

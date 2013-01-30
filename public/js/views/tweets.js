@@ -15,7 +15,7 @@ define(['backbone', 'underscore', 'jquery', 'js/collections/tweets', 'js/views/t
       this.collection.each(this.addOne, this);
       return this;
     },
-
+    
     addOne: function (tweet) {
       var tweetView = new TweetView({
           model: tweet,

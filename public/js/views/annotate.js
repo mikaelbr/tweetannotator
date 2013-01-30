@@ -4,6 +4,7 @@ define(['backbone', 'underscore', 'jquery', 'js/collections/tweets', 'js/views/t
     initialize: function (options) {
       ListTweetsView.prototype.initialize.apply(this, options);
       this.collection.on('sync', this.nextTweet, this);
+      this.collection.on('destroy', this.nextTweet, this);
     },
 
     nextTweet: function () {
