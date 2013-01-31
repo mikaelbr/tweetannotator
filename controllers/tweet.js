@@ -7,7 +7,9 @@ var TwitterLib = require('../lib/twitter')
 
 exports.index = function(req, res){
   // List all
-  res.json(datastore.all());
+  datastore.all(function (err, data) {
+    res.json(data);
+  });
 };
 
 exports.new = function(req, res){
